@@ -19,4 +19,9 @@ async function toggleActive(userId) {
   return res.json();
 }
 
-module.exports = { getWater, logDrink, toggleActive };
+async function getActiveUsers() {
+  const res = await fetch(`${BASE_URL}/api/water/activeUsers`, {headers: headers});
+  return res.json();
+}
+
+module.exports = { getWater, logDrink, toggleActive, getActiveUsers };

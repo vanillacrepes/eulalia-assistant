@@ -5,6 +5,7 @@ const router = express.Router();
 // my beloved helpers I love helpers
 const prepared = {
   getUser: db.prepare('SELECT * FROM users WHERE user_id = ?'),
+  getActiveUsers: db.prepare('SELECT * FROM water WHERE active = 1'),
   insertUser: db.prepare('INSERT INTO users (user_id, created_at) VALUES (?, ?)'),
   getWater: db.prepare('SELECT * FROM water WHERE user_id = ?'),
   insertWater: db.prepare(`
@@ -20,7 +21,7 @@ const prepared = {
     UPDATE water
     SET active = ?
     WHERE user_id = ?
-  `)
+  `),
 };
 
 function isNewDay(lastReset) {
@@ -47,6 +48,18 @@ function ensureUserDataExists(userId, now) {
   return returnState;
 }
 //helpers - end
+
+//GET /activeUsers
+router.get('/activeUsers', (req, res) => {
+  const activeUsers = prepared.getActiveUsers.all()
+  let activeUsersArray = []
+
+  for(const user of activeUsers) {
+    activeUsersArray.push(user.user_id);
+  }
+
+  res.json(activeUsersArray);
+})
 
 // GET /:userId
 router.get('/:userId', (req, res) => {

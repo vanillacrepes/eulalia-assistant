@@ -1,17 +1,17 @@
 const { Events } = require('discord.js');
+const { logDrink } = require('../utils/water');
 
 module.exports = {
   name: Events.MessageCreate,
   async execute(message) {
     if(message.author.bot) return; // don't read bot messages
 
-    author = message.author.id
+    userId = message.author.id
     content = message.content
 
-    if(content != "water") return;
+    if(content != "water" && content != "drink") return;
 
-    const user = waterTracker.get(author)
-    user.lastDrank = Date.now();
-    waterTracker.set(author, user);
+    logDrink(userId);
+    message.reply("okay! :D");
   },
 };
