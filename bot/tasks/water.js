@@ -1,8 +1,6 @@
 const { getWater, getActiveUsers } = require('../utils/water');
 
-const water_threshold = 5; // in seconds
-
-async function waterReminder(client) {
+async function waterReminder(client, water_threshold) {
   const now = Date.now();
 
   const userIds = await getActiveUsers();
@@ -15,11 +13,10 @@ async function waterReminder(client) {
     if(diff >= water_threshold * 1000) {
       const user = client.users.cache.get(userId);
       if (user) user.send('drink water twin');
-      console.log(`dm'd ${user} + ${userId}`)
     }
   }
 }
 
-module.exports = (client) => {
-  setInterval(() => waterReminder(client), 1000)
+module.exports = (client, water_threshold) => {
+  setInterval(() => waterReminder(client, water_threshold), 1000)
 };
