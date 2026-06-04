@@ -8,4 +8,6 @@ function requireApiKey(req, res, next) {
   next();
 }
 
+// this is genuinely just for fun + understanding concepts !
+
 module.exports = requireApiKey;
